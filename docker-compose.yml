@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  grafana:
+    image: grafana/grafana:8.4.4
+    ports:
+      - '3000:3000'
+    volumes:
+      - './grafana/config/grafana.ini:/etc/grafana/grafana.ini'
+      - './grafana/config/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml'
+      - './grafana/dashboards/:/var/lib/grafana/dashboards/'
+      - './grafana/datasources/:/etc/grafana/provisioning/datasources/'
+
+  prometheus:
+    image: prom/prometheus:v2.34.0-rc.2
+    ports:
+      - '9090:9090'
+    volumes:
+      - './prometheus/config:/etc/prometheus'
+
+  dcgm-exporter:
+    image: nvcr.io/nvidia/k8s/dcgm-exporter:2.3.5-2.6.5-ubuntu20.04
+    command: dcgm-exporter -f /etc/dcgm-exporter/dcp-metrics-included.csv
+    volumes:
+      - './dcgm-exporter/dcp-metrics-included.csv:/etc/dcgm-exporter/dcp-metrics-included.csv'
+
+  triton-inference-server:
+    build: inference-server
+    command: tritonserver --model-repository=/model_repository --model-control-mode explicit --exit-on-error 0 --repository-poll-secs 3
+    shm_size: '2gb'
+    environment:
+      - CUDA_MODULE_LOADING="LAZY"
+    volumes:
+      - './notebooks/code/model_repository/:/model_repository'
+
+  notebook-app:
+    command: jupyter lab -y --allow-root --no-browser --ip='*' --NotebookApp.token='' --NotebookApp.password='' --port=8884 --notebook-dir=/opt/project/
+    depends_on:
+      - triton-inference-server
+    build: notebooks
+    shm_size: '2gb'
+    environment:
+      - CUDA_MODULE_LOADING="LAZY"
+    volumes:
+      - './notebooks/code/:/opt/project'
+    ports:
+      - "7860:7860" # gradio UI port
+      - "8884:8884" # Juypter port

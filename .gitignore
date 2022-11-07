@@ -1,0 +1,5 @@
+*.onnx
+*.engine
+*.pth
+*.pt
+notebooks/code/model_repository/*
