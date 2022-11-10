@@ -11,7 +11,7 @@ Always to be used only as a reference.
 - 4 core CPU (min 3.0 GHz)
 - 8 GB System Memory
 - Nvidia GPU w/ CUDA Compute Capability >=7.0
-- 6GB Memory minimum
+- 8GB Memory minimum
 
 ## Installation
 
