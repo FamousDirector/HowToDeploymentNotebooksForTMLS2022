@@ -1,7 +1,7 @@
 # Notebooks on how to Deploy AI/ML systems to production
 This repository was created to add code examples to be used alongside the workshop 
 "Bringing an AI system from proof of concept to deployment"
-presented at Toronto Machine Learning Summit 2022 by James Cameron.
+presented at Toronto Machine Learning Summit 2022 by James Cameron. [Slides and notes can be found here](https://docs.google.com/presentation/d/1kHT9T5baMIRs3hi78sGZd4cwUr60sZA5QFqmFf7tztE/edit?usp=sharing)
 
 ## Disclaimer
 This repository is meant to serve as a starting point for new projects.
