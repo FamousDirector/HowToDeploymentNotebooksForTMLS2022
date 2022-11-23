@@ -26,7 +26,7 @@ services:
 
   triton-inference-server:
     build: inference-server
-    command: tritonserver --model-repository=/model_repository --model-control-mode explicit --exit-on-error 0 --repository-poll-secs 3
+    command: tritonserver --model-repository=/model_repository --model-control-mode poll --exit-on-error 0 --repository-poll-secs 3
     shm_size: '2gb'
     environment:
       - CUDA_MODULE_LOADING="LAZY"
